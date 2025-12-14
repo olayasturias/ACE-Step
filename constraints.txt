@@ -8,7 +8,8 @@ matplotlib==3.10.1
 pypinyin==0.53.0
 soundfile==0.13.1
 transformers==4.49.0
-py3langid==0.3.0
+numpy==1.26.4
+py3langid<0.3.0
 hangul-romanize==0.1.0
 num2words==0.5.14
 spacy==3.8.4
