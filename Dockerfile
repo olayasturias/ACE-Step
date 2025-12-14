@@ -36,12 +36,16 @@ WORKDIR /app
 RUN git clone https://github.com/olayasturias/ACE-Step.git .
 
 # Install specific PyTorch version compatible with CUDA 12.6
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install torch torchvision torchaudio torchcodec --index-url https://download.pytorch.org/whl/cu128 && \
-    pip3 install pytorch_lightning
 RUN python -m pip install --no-cache-dir --upgrade pip && \
-    python -m pip install --no-cache-dir -r requirements.txt -c constraints.txt && \
-    python -m pip install --no-cache-dir -c constraints.txt .
+    pip3 install torch torchvision torchaudio torchcodec --index-url https://download.pytorch.org/whl/cu128 && \
+    pip3 install pytorch_lightning hf_transfer
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    python -m pip install --no-cache-dir \
+        -r /app/requirements.txt \
+        -c /app/constraints.txt && \
+    python -m pip install --no-cache-dir \
+        -c /app/constraints.txt .
+
 
 # RUN pip install --no-cache-dir --force-reinstall "peft==0.17.0"
 # RUN pip install --no-cache-dir --force-reinstall "gradio==3.50.2"
