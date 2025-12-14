@@ -33,19 +33,19 @@ RUN useradd -m -u 1001 appuser
 WORKDIR /app
 
 # Clone the repository
-RUN git clone https://github.com/ace-step/ACE-Step.git .
+RUN git clone https://github.com/olayasturias/ACE-Step.git .
 
 # Install specific PyTorch version compatible with CUDA 12.6
 RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir hf_transfer peft && \
     pip3 install torch torchvision torchaudio torchcodec --index-url https://download.pytorch.org/whl/cu128 && \
-    pip3 install pytorch_lightning==2.5.1 && \
-    pip3 install --no-cache-dir -r requirements.txt
-RUN pip3 install --no-cache-dir .
+    pip3 install pytorch_lightning
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    python -m pip install --no-cache-dir -r requirements.txt -c constraints.txt && \
+    python -m pip install --no-cache-dir -c constraints.txt .
 
-RUN pip install --no-cache-dir --force-reinstall "peft==0.17.0"
-RUN pip install --no-cache-dir --force-reinstall "gradio==3.50.2"
-RUN pip install --no-cache-dir --force-reinstall "huggingface_hub==0.36.0"
+# RUN pip install --no-cache-dir --force-reinstall "peft==0.17.0"
+# RUN pip install --no-cache-dir --force-reinstall "gradio==3.50.2"
+# RUN pip install --no-cache-dir --force-reinstall "huggingface_hub==0.36.0"
 
 
 # Ensure target directories for volumes exist and have correct initial ownership
@@ -64,8 +64,9 @@ EXPOSE 7865
 VOLUME [ "/app/checkpoints", "/app/outputs", "/app/logs" ]
 
 # Set healthcheck
-# HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
-#   CMD curl -f http://localhost:7865/ || exit 1
+HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
+  CMD curl -f http://localhost:7865/ || exit 1
 
-# # Command to run the application with GPU support
-# CMD ["python3", "acestep/gui.py", "--server_name", "0.0.0.0", "--bf16", "true"]
+# Command to run the application with GPU support
+
+CMD ["python3", "acestep/gui.py", "--server_name", "0.0.0.0", "--bf16", "true"]
