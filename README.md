@@ -185,6 +185,35 @@ We use RTF (Real-Time Factor) to measure the performance of ACE-Step. Higher val
 
 ## 📦 Installation
 
+### Docker (container alternative) :whale:
+#### 1. Prerequisites
+Ensure you have:
+- Docker installed
+- (Optional, for NVIDIA GPU) NVIDIA Container Toolkit installed and a compatible NVIDIA driver
+
+#### 2. Build the Docker Image
+From the repository root (where your Dockerfile is located), build the image:
+
+```bash
+docker build -t ace-step:latest .
+```
+
+#### 3. Run the Container
+
+CPU only
+```bash
+docker run --rm -p 7865:7865 ace-step
+```
+
+With NVIDIA GPU
+
+```bash
+docker run --rm --gpus all -p 7865:7865 ace-step
+```
+
+Once started, you can open your browser at http://localhost:7865
+
+
 ### 1. Clone the Repository
 First, clone the ACE-Step repository to your local machine and navigate into the project directory:
 ```bash
